@@ -1,0 +1,57 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/global.css';
+---
+
+<Layout title="404 - Signal Lost | Lumina">
+  <div class="min-h-screen bg-[#050505] flex items-center justify-center relative overflow-hidden">
+    <!-- Animated static background -->
+    <div class="lumina-noise opacity-30" />
+
+    <!-- Glowing orbs -->
+    <div class="absolute top-1/4 left-1/4 w-[300px] h-[300px] bg-[#ff00ff] rounded-full mix-blend-screen opacity-20 blur-[100px] animate-pulse" />
+    <div class="absolute bottom-1/4 right-1/4 w-[200px] h-[200px] bg-[#00ffff] rounded-full mix-blend-screen opacity-20 blur-[80px] animate-pulse" />
+
+    <div class="relative z-10 text-center px-6 max-w-2xl">
+      <!-- Error code -->
+      <div class="relative mb-8">
+        <h1 class="text-[25vw] sm:text-[30vw] md:text-[20vw] font-black text-transparent leading-none tracking-tighter" style="-webkit-text-stroke: 2px rgba(255,255,255,0.1);">
+          404
+        </h1>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <span class="text-2xl sm:text-4xl md:text-6xl font-black text-white tracking-wider sm:tracking-widest uppercase lumina-glitch">
+            SIGNAL LOST
+          </span>
+        </div>
+      </div>
+
+      <!-- Terminal message -->
+      <div class="mb-12 p-6 border border-white/10 bg-white/5 backdrop-blur-sm text-left font-mono text-sm">
+        <div class="text-[#ff00ff] mb-2">&gt; ERROR::ROUTE_NOT_FOUND</div>
+        <div class="text-white/40 mb-2">&gt; The requested frequency does not exist in this dimension.</div>
+        <div class="text-[#ccff00]">&gt; Redirecting to home beacon...</div>
+        <span class="inline-block w-2 h-4 bg-[#ccff00] animate-pulse ml-1" />
+      </div>
+
+      <!-- CTA -->
+      <a
+        href="/"
+        class="inline-flex items-center gap-3 px-8 py-4 bg-white/10 border border-white/20 text-white font-bold tracking-widest uppercase text-sm hover:bg-[#ccff00] hover:text-black hover:border-transparent transition-all duration-300 group"
+      >
+        <span class="group-hover:translate-x-[-4px] transition-transform">&larr;</span>
+        Return to Origin
+      </a>
+    </div>
+
+    <!-- Corner decorations -->
+    <div class="absolute top-8 left-8 w-12 h-12 border-t border-l border-white/10" />
+    <div class="absolute top-8 right-8 w-12 h-12 border-t border-r border-white/10" />
+    <div class="absolute bottom-8 left-8 w-12 h-12 border-b border-l border-white/10" />
+    <div class="absolute bottom-8 right-8 w-12 h-12 border-b border-r border-white/10" />
+
+    <!-- Status indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 font-mono text-[10px] text-white/20 tracking-widest uppercase">
+      SYS::STATUS_OFFLINE <span class="inline-block w-1.5 h-1.5 bg-[#ff3300] rounded-full animate-pulse ml-1" />
+    </div>
+  </div>
+</Layout>

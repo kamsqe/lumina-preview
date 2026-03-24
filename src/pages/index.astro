@@ -1,0 +1,73 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/sections/Navbar';
+import Hero from '../components/sections/Hero';
+import About from '../components/sections/About';
+import Features from '../components/sections/Features';
+import Portfolio from '../components/sections/Portfolio';
+import Pricing from '../components/sections/Pricing';
+import Testimonials from '../components/sections/Testimonials';
+import FAQ from '../components/sections/FAQ';
+import CTA from '../components/sections/CTA';
+import Contact from '../components/sections/Contact';
+import Footer from '../components/sections/Footer';
+import LogoCloud from '../components/sections/LogoCloud';
+import Process from '../components/sections/Process';
+import Team from '../components/sections/Team';
+import Comparison from '../components/sections/Comparison';
+import Preloader from '../components/ui/Preloader';
+import SmoothScroll from '../components/ui/SmoothScroll';
+import ScrollProgress from '../components/ui/ScrollProgress';
+import SectionDivider from '../components/ui/SectionDivider';
+import Cursor from '../components/ui/Cursor';
+import GravityWell from '../components/ui/GravityWell';
+import SoundEngine from '../components/ui/SoundEngine';
+import PortalWormhole from '../components/ui/PortalWormhole';
+import CursorLight from '../components/ui/CursorLight';
+import ScrollGlitch from '../components/ui/ScrollGlitch';
+import TemporalDrift from '../components/ui/TemporalDrift';
+import ClickExplosion from '../components/ui/ClickExplosion';
+import '../styles/global.css';
+---
+
+<Layout title="Lumina - Liquid Neon Chaos">
+  <Preloader client:load />
+  <SmoothScroll client:load />
+  <ScrollProgress client:load />
+  <Cursor client:load />
+  <GravityWell client:idle />
+  <SoundEngine client:idle />
+  <CursorLight client:idle />
+  <ScrollGlitch client:idle />
+  <TemporalDrift client:idle />
+  <ClickExplosion client:idle />
+  <Navbar client:load />
+  <main class="relative z-[2]">
+    <Hero client:only="react" />
+    <PortalWormhole client:visible />
+    <LogoCloud client:visible />
+    <SectionDivider variant="gradient" client:visible />
+    <About client:visible />
+    <SectionDivider variant="glitch" client:visible />
+    <Features client:visible />
+    <SectionDivider variant="dots" client:visible />
+    <Process client:visible />
+    <SectionDivider variant="gradient" client:visible />
+    <Portfolio client:visible />
+    <SectionDivider variant="dots" client:visible />
+    <Team client:visible />
+    <SectionDivider variant="gradient" client:visible />
+    <Pricing client:visible />
+    <SectionDivider variant="glitch" client:visible />
+    <Testimonials client:visible />
+    <SectionDivider variant="dots" client:visible />
+    <FAQ client:visible />
+    <SectionDivider variant="glitch" client:visible />
+    <Comparison client:visible />
+    <SectionDivider variant="gradient" client:visible />
+    <CTA client:visible />
+    <SectionDivider variant="glitch" client:visible />
+    <Contact client:visible />
+  </main>
+  <Footer client:idle />
+</Layout>

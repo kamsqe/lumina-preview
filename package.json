@@ -1,0 +1,54 @@
+{
+  "name": "lumina",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "A high-intensity, WebGL-powered Astro template with fluid animations, neon aesthetics, and interactive effects.",
+  "author": "Kambar Mirmanov",
+  "license": "MIT",
+  "homepage": "https://github.com/kambarmirmanov/lumina",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kambarmirmanov/lumina.git"
+  },
+  "keywords": [
+    "astro",
+    "template",
+    "webgl",
+    "react",
+    "tailwindcss",
+    "framer-motion",
+    "threejs",
+    "landing-page",
+    "neon"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/react": "^5.0.1",
+    "@astrojs/sitemap": "^3.7.1",
+    "@fontsource-variable/space-grotesk": "^5.2.10",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.5.0",
+    "@tailwindcss/vite": "^4.1.18",
+    "astro": "^6.0.8",
+    "framer-motion": "^12.33.0",
+    "lenis": "^1.3.19",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "tailwindcss": "^4.1.18",
+    "three": "^0.183.2",
+    "valibot": "^1.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.13",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^5.9.3"
+  }
+}
