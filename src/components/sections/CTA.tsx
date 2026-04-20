@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import MagneticButton from '../ui/MagneticButton';
-import { useIsTouch } from '../../lib/hooks';
 
 const RING_COUNT = 15;
 const COLORS = ['#00ffff', '#ccff00', '#ff00ff'];
@@ -14,7 +13,6 @@ const RINGS = Array.from({ length: RING_COUNT }, (_, i) => ({
 }));
 
 export default function CTA() {
-  const isTouch = useIsTouch();
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start end', 'end start'] });
 
@@ -22,8 +20,8 @@ export default function CTA() {
   const ctaY = useTransform(scrollYProgress, [0.55, 0.7], [40, 0]);
 
   return (
-    <section id="cta" ref={containerRef} className="relative bg-[#030305]" style={{ height: isTouch ? 'auto' : '300vh' }}>
-      <div className={`${isTouch ? 'relative min-h-screen' : 'sticky top-0 h-screen'} overflow-hidden flex items-center justify-center`}>
+    <section id="cta" ref={containerRef} className="relative bg-[#030305]" style={{ height: '300vh' }}>
+      <div className="sticky top-0 h-screen overflow-hidden flex items-center justify-center">
         {/* Radial background */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,#0a0a1a_0%,#030305_60%,#000_100%)]" />
 
@@ -44,8 +42,8 @@ export default function CTA() {
           ))}
         </div>
 
-        {/* Tunnel rings — skip on touch */}
-        {!isTouch && RINGS.map((ring) => {
+        {/* Tunnel rings */}
+        {RINGS.map((ring) => {
           const ringProgress = ring.id / RING_COUNT;
           const scaleStart = 0.05 + ringProgress * 0.55;
           const scaleEnd = Math.min(scaleStart + 0.25, 0.85);
@@ -61,22 +59,20 @@ export default function CTA() {
           );
         })}
 
-        {/* Center glow — skip on touch */}
-        {!isTouch && (
-          <motion.div
-            className="absolute w-4 h-4 rounded-full pointer-events-none"
-            style={{
-              background: 'radial-gradient(circle, rgba(204,255,0,0.4) 0%, transparent 70%)',
-              opacity: useTransform(scrollYProgress, [0, 0.3, 0.6], [0.8, 0.5, 0]),
-              scale: useTransform(scrollYProgress, [0, 0.5], [1, 3]),
-            }}
-          />
-        )}
+        {/* Center glow */}
+        <motion.div
+          className="absolute w-4 h-4 rounded-full pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle, rgba(204,255,0,0.4) 0%, transparent 70%)',
+            opacity: useTransform(scrollYProgress, [0, 0.3, 0.6], [0.8, 0.5, 0]),
+            scale: useTransform(scrollYProgress, [0, 0.5], [1, 3]),
+          }}
+        />
 
-        {/* CTA Content — appears after tunnel (instant on touch) */}
+        {/* CTA Content — appears after tunnel */}
         <motion.div
           className="relative z-10 text-center max-w-4xl px-6"
-          style={isTouch ? undefined : { opacity: ctaOpacity, y: ctaY }}
+          style={{ opacity: ctaOpacity, y: ctaY }}
         >
           <h2 className="text-4xl sm:text-5xl md:text-9xl font-black text-white tracking-tighter mb-8 leading-none">
             <span className="block">ENTER THE</span>
@@ -96,7 +92,7 @@ export default function CTA() {
           </MagneticButton>
         </motion.div>
 
-        {!isTouch && <div className="absolute inset-0 lumina-noise opacity-[0.05] pointer-events-none mix-blend-overlay !z-0" />}
+        <div className="absolute inset-0 lumina-noise opacity-[0.05] pointer-events-none mix-blend-overlay !z-0" />
       </div>
     </section>
   );

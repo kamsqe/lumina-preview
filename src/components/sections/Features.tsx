@@ -87,7 +87,7 @@ const slideVariants = {
 const TakeoverStrip = ({ title, description, rune, hex, index, expanded, onExpand, onCollapse, direction, onSwipeStart, onSwipeEnd, activeIndex, total, isTouch }: {
   title: string; description: string; rune: string; hex: string; index: number;
   expanded: boolean; onExpand: () => void; onCollapse: () => void;
-  direction: number; onSwipeStart: (x: number) => void; onSwipeEnd: (x: number) => void;
+  direction: number; onSwipeStart: (x: number, y: number) => void; onSwipeEnd: (x: number, y: number) => void;
   activeIndex: number | null; total: number; isTouch: boolean;
 }) => {
   const [hovered, setHovered] = useState(false);
@@ -174,8 +174,8 @@ const TakeoverStrip = ({ title, description, rune, hex, index, expanded, onExpan
             animate="center"
             exit="exit"
             transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
-            onTouchStart={(e) => onSwipeStart(e.touches[0].clientX)}
-            onTouchEnd={(e) => onSwipeEnd(e.changedTouches[0].clientX)}
+            onTouchStart={(e) => onSwipeStart(e.touches[0].clientX, e.touches[0].clientY)}
+            onTouchEnd={(e) => onSwipeEnd(e.changedTouches[0].clientX, e.changedTouches[0].clientY)}
           >
             {/* Color flood overlay */}
             <div
@@ -267,7 +267,7 @@ export default function Features() {
   const isTouch = useIsTouch();
   const [active, setActive] = useState<number | null>(null);
   const [direction, setDirection] = useState(0);
-  const touchStart = useRef<number | null>(null);
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
   const total = FEATURES.length;
 
   const navigate = useCallback((dir: 1 | -1) => {
@@ -317,12 +317,13 @@ export default function Features() {
                   onExpand={() => { setDirection(0); setActive(i); }}
                   onCollapse={() => setActive(null)}
                   direction={direction}
-                  onSwipeStart={(x) => { touchStart.current = x; }}
-                  onSwipeEnd={(x) => {
+                  onSwipeStart={(x, y) => { touchStart.current = { x, y }; }}
+                  onSwipeEnd={(x, y) => {
                     if (touchStart.current === null) return;
-                    const dx = x - touchStart.current;
+                    const dx = x - touchStart.current.x;
+                    const dy = y - touchStart.current.y;
                     touchStart.current = null;
-                    if (Math.abs(dx) > 50) navigate(dx < 0 ? 1 : -1);
+                    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) navigate(dx < 0 ? 1 : -1);
                   }}
                   activeIndex={active}
                   total={total}

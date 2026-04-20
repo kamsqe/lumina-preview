@@ -132,7 +132,7 @@ export default function Hero() {
   const waterSurfaceY = useTransform(scrollYProgress, [0, 0.4, 0.8], ['-5%', '40%', '110%']);
   const textY = useTransform(scrollYProgress, isTouch ? [0, 0.6] : [0, 0.2, 0.6], isTouch ? ['0vh', '-40vh'] : ['0vh', '-20vh', '-70vh']);
   const textOpacity = useTransform(scrollYProgress, [0, 0.3, 0.55], [1, 1, 0]);
-  const ctaOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
+  const ctaOpacity = useTransform(scrollYProgress, [0, 0.05, 0.12], [1, 1, 0]);
   const dripsOpacity = useTransform(scrollYProgress, [0.1, 0.4, 0.75], [0, 1, 0]);
 
   // Track scroll value for canvas (desktop only)

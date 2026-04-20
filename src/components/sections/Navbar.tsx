@@ -167,7 +167,15 @@ export default function Navbar() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.1 }}
-                  onClick={() => setMobileOpen(false)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setMobileOpen(false);
+                    const id = link.href.replace('#', '');
+                    setTimeout(() => {
+                      const el = document.getElementById(id);
+                      if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    }, 150);
+                  }}
                   className="text-3xl sm:text-4xl font-black text-white hover:text-[#ccff00] tracking-tighter uppercase"
                 >
                   {link.label}

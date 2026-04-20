@@ -34,7 +34,7 @@ function LiveTerminal() {
   return (
     <div className="p-4 sm:p-8 border border-white/10 bg-white/5 font-mono text-xs text-[#ccff00]/80 h-64 overflow-hidden relative">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0a0a0a] z-10 pointer-events-none" />
-      <div ref={scrollRef} className="h-full overflow-hidden flex flex-col justify-end">
+      <div ref={scrollRef} className="h-full overflow-y-hidden overflow-x-auto flex flex-col justify-end">
         {lines.map((line, i) => (
           <motion.div
             key={`${i}-${line}`}

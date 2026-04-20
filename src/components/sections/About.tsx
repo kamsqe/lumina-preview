@@ -148,13 +148,13 @@ export default function About() {
           <div className="select-none">
             <motion.div
               style={{ x: isTouch ? 0 : x1 }}
-              className="text-[14vw] md:text-[15vw] leading-none font-black tracking-tighter text-white whitespace-nowrap"
+              className="text-[11vw] md:text-[15vw] leading-none font-black tracking-tighter text-white whitespace-nowrap"
             >
               WE ARE THE VOID
             </motion.div>
             <motion.div
               style={{ x: isTouch ? 0 : x2 }}
-              className="text-[14vw] md:text-[15vw] leading-none font-black tracking-tighter text-[#ccff00] whitespace-nowrap -mt-4 md:-mt-12"
+              className="text-[11vw] md:text-[15vw] leading-none font-black tracking-tighter text-[#ccff00] whitespace-nowrap -mt-4 md:-mt-12"
             >
               WE ARE LIQUID
             </motion.div>
