@@ -11,7 +11,7 @@ const LogoItem = ({ name }: { name: string }) => (
 );
 
 const MarqueeRow = ({ reverse = false }: { reverse?: boolean }) => {
-  const items = [...CLIENTS, ...CLIENTS, ...CLIENTS, ...CLIENTS];
+  const items = [...CLIENTS, ...CLIENTS];
   return (
     <div className="relative overflow-hidden group/marquee" aria-hidden="true">
       <div className={reverse ? 'animate-marquee-reverse' : 'animate-marquee'} style={{ display: 'flex', width: 'max-content', animationPlayState: 'running' }} onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.animationPlayState = 'paused'; }} onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.animationPlayState = 'running'; }}>

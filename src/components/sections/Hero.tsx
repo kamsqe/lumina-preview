@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { useIsTouch } from '../../lib/hooks';
 
 
 /* ── Caustic Light Shader (single-pass, no FBOs) ── */
@@ -123,40 +124,46 @@ const DEBRIS = Array.from({ length: 4 }, (_, i) => ({
 
 /* ── Hero ── */
 export default function Hero() {
+  const isTouch = useIsTouch();
   const outerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: outerRef, offset: ['start start', 'end start'] });
-  // Scroll-driven transforms
+  // Scroll-driven transforms — simplified on touch
   const causticOpacity = useTransform(scrollYProgress, [0, 0.5, 0.8], [1, 0.6, 0]);
   const waterSurfaceY = useTransform(scrollYProgress, [0, 0.4, 0.8], ['-5%', '40%', '110%']);
-  const textY = useTransform(scrollYProgress, [0, 0.2, 0.6], ['0vh', '-20vh', '-70vh']);
+  const textY = useTransform(scrollYProgress, isTouch ? [0, 0.6] : [0, 0.2, 0.6], isTouch ? ['0vh', '-40vh'] : ['0vh', '-20vh', '-70vh']);
   const textOpacity = useTransform(scrollYProgress, [0, 0.3, 0.55], [1, 1, 0]);
   const ctaOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
   const dripsOpacity = useTransform(scrollYProgress, [0.1, 0.4, 0.75], [0, 1, 0]);
 
-  // Track scroll value for canvas
+  // Track scroll value for canvas (desktop only)
   const scrollVal = useRef(0);
   useEffect(() => {
+    if (isTouch) return;
     return scrollYProgress.on('change', (v: number) => { scrollVal.current = v; });
-  }, [scrollYProgress]);
+  }, [scrollYProgress, isTouch]);
 
   return (
     <div ref={outerRef} id="hero" className="relative min-h-[200vh]">
-      <div className="sticky top-0 h-screen overflow-hidden bg-[#050505] selection:bg-[#ccff00] selection:text-black">
+      <div className="sticky top-0 h-screen overflow-hidden bg-[#050505] selection:bg-[#ccff00] selection:text-black" style={{ willChange: 'transform' }}>
 
 
         {/* ── Deep Abyss Background ── */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#050510] via-[#080818] to-[#050505] z-0" />
 
-        {/* ── Caustic Light Canvas ── */}
-        <motion.div className="absolute inset-0 z-[1]" style={{ opacity: causticOpacity }}>
-          <CausticCanvas scrollRef={scrollVal} />
+        {/* ── Caustic Light Canvas (desktop) / CSS gradient (mobile) ── */}
+        <motion.div className="absolute inset-0 z-[1]" style={{ opacity: causticOpacity, willChange: 'opacity' }}>
+          {isTouch ? (
+            <div className="absolute inset-0 bg-gradient-to-br from-[#00ffff]/15 via-[#050510] to-[#ff00ff]/10" aria-hidden="true" />
+          ) : (
+            <CausticCanvas scrollRef={scrollVal} />
+          )}
         </motion.div>
 
 
         {/* ── Water Surface: merged dark mask + wavy line ── */}
         <motion.div
           className="absolute left-0 right-0 z-[7] pointer-events-none"
-          style={{ top: waterSurfaceY }}
+          style={{ top: waterSurfaceY, willChange: 'top' }}
           aria-hidden="true"
         >
           {/* Solid dark fill extending upward — clipped by parent overflow:hidden */}
@@ -197,43 +204,47 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* ── Bubbles ── */}
-        <motion.div className="absolute inset-0 z-[3] pointer-events-none" style={{ opacity: causticOpacity }} aria-hidden="true">
-          {BUBBLES.map((b) => (
-            <div
-              key={b.id}
-              className={`absolute rounded-full ${b.glow ? 'bg-[#00ffff]/30 shadow-[0_0_6px_rgba(0,255,255,0.3)]' : 'bg-white/20'} border border-white/10`}
-              style={{
-                left: `${b.left}%`,
-                bottom: '-5%',
-                width: b.size,
-                height: b.size,
-                '--bubble-scale': 1,
-                '--bubble-opacity': b.opacity,
-                '--bubble-drift': b.drift,
-                animation: `bubble-rise ${b.duration}s ease-in-out infinite ${b.delay}s`,
-              } as React.CSSProperties}
-            />
-          ))}
-        </motion.div>
+        {/* ── Bubbles (desktop only) ── */}
+        {!isTouch && (
+          <motion.div className="absolute inset-0 z-[3] pointer-events-none" style={{ opacity: causticOpacity }} aria-hidden="true">
+            {BUBBLES.map((b) => (
+              <div
+                key={b.id}
+                className={`absolute rounded-full ${b.glow ? 'bg-[#00ffff]/30 shadow-[0_0_6px_rgba(0,255,255,0.3)]' : 'bg-white/20'} border border-white/10`}
+                style={{
+                  left: `${b.left}%`,
+                  bottom: '-5%',
+                  width: b.size,
+                  height: b.size,
+                  '--bubble-scale': 1,
+                  '--bubble-opacity': b.opacity,
+                  '--bubble-drift': b.drift,
+                  animation: `bubble-rise ${b.duration}s ease-in-out infinite ${b.delay}s`,
+                } as React.CSSProperties}
+              />
+            ))}
+          </motion.div>
+        )}
 
-        {/* ── Floating Debris ── */}
-        <motion.div className="absolute inset-0 z-[3] pointer-events-none" style={{ opacity: causticOpacity }} aria-hidden="true">
-          {DEBRIS.map((d) => (
-            <div
-              key={d.id}
-              className="absolute bg-white/10 rounded-full"
-              style={{
-                left: `${d.left}%`,
-                top: `${d.top}%`,
-                width: d.width,
-                height: d.height,
-                '--debris-opacity': d.opacity,
-                animation: `debris-drift ${d.duration}s ease-in-out infinite ${d.delay}s`,
-              } as React.CSSProperties}
-            />
-          ))}
-        </motion.div>
+        {/* ── Floating Debris (desktop only) ── */}
+        {!isTouch && (
+          <motion.div className="absolute inset-0 z-[3] pointer-events-none" style={{ opacity: causticOpacity }} aria-hidden="true">
+            {DEBRIS.map((d) => (
+              <div
+                key={d.id}
+                className="absolute bg-white/10 rounded-full"
+                style={{
+                  left: `${d.left}%`,
+                  top: `${d.top}%`,
+                  width: d.width,
+                  height: d.height,
+                  '--debris-opacity': d.opacity,
+                  animation: `debris-drift ${d.duration}s ease-in-out infinite ${d.delay}s`,
+                } as React.CSSProperties}
+              />
+            ))}
+          </motion.div>
+        )}
 
         {/* ── Fog / Depth-of-Field Layer ── */}
         <motion.div
@@ -252,6 +263,7 @@ export default function Hero() {
           style={{
             opacity: textOpacity,
             y: textY,
+            willChange: 'transform, opacity',
           }}
         >
           <h1 className="sr-only">Liquid Neon Chaos</h1>

@@ -51,7 +51,7 @@ const MagneticImage = ({ src, alt }: { src: string; alt: string }) => {
         src={src}
         alt={alt}
         className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-110"
-        style={{ filter: 'url(#meltFilter) grayscale(100%)', x: springImgX, y: springImgY }}
+        style={{ x: springImgX, y: springImgY }}
       />
       <div className="absolute inset-0 bg-[#00ffff] mix-blend-overlay opacity-0 group-hover:opacity-40 transition-opacity duration-300" />
       <motion.div

@@ -1,19 +1,21 @@
 import React from 'react';
 import { motion, useScroll, useVelocity, useTransform, useSpring } from 'framer-motion';
+import { useIsTouch } from '../../lib/hooks';
 
 interface SectionDividerProps {
   variant?: 'glitch' | 'gradient' | 'dots';
 }
 
-function useScrollVelocityScale() {
+function useScrollVelocityScale(skip: boolean) {
   const { scrollY } = useScroll();
   const velocity = useVelocity(scrollY);
-  const absVelocity = useTransform(velocity, (v) => Math.min(Math.abs(v) / 1000, 1));
+  const absVelocity = useTransform(velocity, (v) => skip ? 0 : Math.min(Math.abs(v) / 1000, 1));
   const smoothed = useSpring(absVelocity, { stiffness: 100, damping: 20 });
   return smoothed;
 }
 
 export default function SectionDivider({ variant = 'glitch' }: SectionDividerProps) {
+  const isTouch = useIsTouch();
   if (variant === 'dots') {
     return (
       <div aria-hidden="true" className="relative py-8 flex items-center justify-center gap-3 overflow-hidden">
@@ -46,7 +48,7 @@ export default function SectionDivider({ variant = 'glitch' }: SectionDividerPro
   }
 
   // glitch variant
-  const velocityScale = useScrollVelocityScale();
+  const velocityScale = useScrollVelocityScale(isTouch);
   const cyanX = useTransform(velocityScale, [0, 1], [0, 60]);
   const magentaX = useTransform(velocityScale, [0, 1], [0, -40]);
   const glitchOpacity = useTransform(velocityScale, [0, 0.2, 1], [0.3, 0.6, 1]);

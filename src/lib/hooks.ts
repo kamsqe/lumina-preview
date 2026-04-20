@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 
 export function useIsTouch() {
-  const [isTouch, setIsTouch] = useState(false);
+  const [isTouch, setIsTouch] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(pointer: coarse)').matches;
+  });
   useEffect(() => {
     setIsTouch(window.matchMedia('(pointer: coarse)').matches);
   }, []);
