@@ -231,6 +231,31 @@ a:focus-visible {
     backdrop-filter: none !important;
     background-color: rgba(0, 0, 0, 0.75) !important;
   }
+
+  /* A3: Hide SoundEngine floating button */
+  button[aria-label="Enable sound"],
+  button[aria-label="Disable sound"] {
+    display: none !important;
+  }
+
+  /* B3: Kill all decorative infinite CSS animations */
+  .animate-breathe,
+  .lumina-noise,
+  .lumina-gradient-border::before,
+  .animate-spin-slow,
+  .animate-reverse-spin,
+  .animate-spin-slower,
+  .takeover-ripple,
+  .takeover-scanline,
+  .takeover-dot,
+  .ripple-splash,
+  .animate-scan-line {
+    animation: none !important;
+  }
+
+  .lumina-noise {
+    display: none !important;
+  }
 }
 
 /* ── Reduced Motion ── */

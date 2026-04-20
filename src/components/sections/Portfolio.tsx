@@ -19,9 +19,8 @@ const Shard = ({ image, title, category, index }: {
   return (
     <motion.div
       className="relative h-[400px] w-full group cursor-pointer will-change-transform"
-      initial="broken"
+      initial={isTouch ? 'healed' : 'broken'}
       whileHover={!isTouch ? 'healed' : undefined}
-      whileInView={isTouch ? 'healed' : undefined}
       viewport={{ once: false, margin: '-100px' }}
       data-cursor-label="View"
       style={{ transform: 'translateZ(0)' }}

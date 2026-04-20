@@ -27,17 +27,25 @@ const EchoCard = ({ quote, author, role, delay, isTouch }: { quote: string; auth
     )}
 
     <p className="text-xl md:text-2xl text-white/80 font-light italic mb-8 relative z-10 group-hover:text-white transition-colors">
-      <motion.span
-        className="inline-block text-[#ccff00] not-italic mr-1"
-        animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
-        transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut', delay: delay * 0.5 }}
-      >"</motion.span>
+      {isTouch ? (
+        <span className="inline-block text-[#ccff00] not-italic mr-1">"</span>
+      ) : (
+        <motion.span
+          className="inline-block text-[#ccff00] not-italic mr-1"
+          animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut', delay: delay * 0.5 }}
+        >"</motion.span>
+      )}
       {quote}
-      <motion.span
-        className="inline-block text-[#ccff00] not-italic ml-1"
-        animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
-        transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut', delay: delay * 0.5 + 0.6 }}
-      >"</motion.span>
+      {isTouch ? (
+        <span className="inline-block text-[#ccff00] not-italic ml-1">"</span>
+      ) : (
+        <motion.span
+          className="inline-block text-[#ccff00] not-italic ml-1"
+          animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut', delay: delay * 0.5 + 0.6 }}
+        >"</motion.span>
+      )}
     </p>
 
     <div>

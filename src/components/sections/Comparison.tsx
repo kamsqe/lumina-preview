@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import Section from '../ui/Section';
 import SectionHeading from '../ui/SectionHeading';
 import { COMPARISON_FEATURES } from '../../lib/data';
+import { useIsTouch } from '../../lib/hooks';
 
 const CheckMark = ({ active }: { active: boolean }) => (
   <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" className="inline-block">
@@ -87,6 +88,7 @@ const ComparisonRow = ({ feature, standard, lumina, index, progress }: {
 };
 
 export default function Comparison() {
+  const isTouch = useIsTouch();
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -108,7 +110,7 @@ export default function Comparison() {
         </div>
 
         {COMPARISON_FEATURES.map((item, i) => (
-          <ComparisonRowWrapper key={item.feature} item={item} index={i} scrollProgress={scrollYProgress} />
+          <ComparisonRowWrapper key={item.feature} item={item} index={i} scrollProgress={scrollYProgress} isTouch={isTouch} />
         ))}
 
         <motion.div
@@ -120,17 +122,19 @@ export default function Comparison() {
   );
 }
 
-function ComparisonRowWrapper({ item, index, scrollProgress }: {
+function ComparisonRowWrapper({ item, index, scrollProgress, isTouch }: {
   item: typeof COMPARISON_FEATURES[number];
   index: number;
   scrollProgress: ReturnType<typeof useScroll>['scrollYProgress'];
+  isTouch: boolean;
 }) {
-  const [currentProgress, setCurrentProgress] = React.useState(0);
+  const [currentProgress, setCurrentProgress] = React.useState(isTouch ? 1 : 0);
 
   React.useEffect(() => {
+    if (isTouch) return;
     const unsubscribe = scrollProgress.on('change', (v) => setCurrentProgress(v));
     return unsubscribe;
-  }, [scrollProgress]);
+  }, [scrollProgress, isTouch]);
 
   return (
     <ComparisonRow

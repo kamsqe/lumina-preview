@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Section from '../ui/Section';
 import SectionHeading from '../ui/SectionHeading';
 import { FEATURES } from '../../lib/data';
+import { useIsTouch } from '../../lib/hooks';
 
 /* ── Typewriter hook ── */
 function useTypewriter(text: string, active: boolean, speed = 20) {
@@ -83,11 +84,11 @@ const slideVariants = {
 };
 
 /* ── Single Strip / Expanded Card ── */
-const TakeoverStrip = ({ title, description, rune, hex, index, expanded, onExpand, onCollapse, direction, onSwipeStart, onSwipeEnd, activeIndex, total }: {
+const TakeoverStrip = ({ title, description, rune, hex, index, expanded, onExpand, onCollapse, direction, onSwipeStart, onSwipeEnd, activeIndex, total, isTouch }: {
   title: string; description: string; rune: string; hex: string; index: number;
   expanded: boolean; onExpand: () => void; onCollapse: () => void;
   direction: number; onSwipeStart: (x: number) => void; onSwipeEnd: (x: number) => void;
-  activeIndex: number | null; total: number;
+  activeIndex: number | null; total: number; isTouch: boolean;
 }) => {
   const [hovered, setHovered] = useState(false);
   const [contentReady, setContentReady] = useState(false);
@@ -182,8 +183,8 @@ const TakeoverStrip = ({ title, description, rune, hex, index, expanded, onExpan
               style={{ background: `radial-gradient(ellipse at 30% 40%, ${hex}12 0%, transparent 60%)` }}
             />
 
-            {/* Decorative animation */}
-            <Decor hex={hex} />
+            {/* Decorative animation — skip on touch */}
+            {!isTouch && <Decor hex={hex} />}
 
             {/* Watermark rune */}
             <div
@@ -263,6 +264,7 @@ const TakeoverStrip = ({ title, description, rune, hex, index, expanded, onExpan
 };
 
 export default function Features() {
+  const isTouch = useIsTouch();
   const [active, setActive] = useState<number | null>(null);
   const [direction, setDirection] = useState(0);
   const touchStart = useRef<number | null>(null);
@@ -324,6 +326,7 @@ export default function Features() {
                   }}
                   activeIndex={active}
                   total={total}
+                  isTouch={isTouch}
                 />
               </motion.div>
             )}

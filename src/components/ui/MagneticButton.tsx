@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { useIsTouch } from '../../lib/hooks';
 
 interface MagneticButtonProps {
   children: React.ReactNode;
@@ -10,6 +11,23 @@ interface MagneticButtonProps {
 }
 
 export default function MagneticButton({ children, className = '', as: Tag = 'button', href, ...rest }: MagneticButtonProps) {
+  const isTouch = useIsTouch();
+
+  if (isTouch) {
+    return Tag === 'a' ? (
+      <a href={href} className={className} {...rest}>{children}</a>
+    ) : (
+      <button className={className} {...rest}>{children}</button>
+    );
+  }
+
+  return <MagneticButtonInner Tag={Tag} href={href} className={className} rest={rest}>{children}</MagneticButtonInner>;
+}
+
+function MagneticButtonInner({ children, className, Tag, href, rest }: {
+  children: React.ReactNode; className: string; Tag: 'button' | 'a'; href?: string;
+  rest: Record<string, any>;
+}) {
   const ref = useRef<HTMLElement>(null);
   const motionX = useMotionValue(0);
   const motionY = useMotionValue(0);

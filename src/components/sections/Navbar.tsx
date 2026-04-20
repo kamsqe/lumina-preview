@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring, useScroll } from 'framer-motion';
-import { useScrolled } from '../../lib/hooks';
+import { useScrolled, useIsTouch } from '../../lib/hooks';
 import { NAV_LINKS } from '../../lib/data';
 
-function useScrollPercent() {
+function useScrollPercent(skip: boolean) {
   const { scrollYProgress } = useScroll();
   const [percent, setPercent] = useState(0);
   useEffect(() => {
+    if (skip) return;
     const unsub = scrollYProgress.on('change', (v) => setPercent(Math.round(v * 100)));
     return unsub;
-  }, [scrollYProgress]);
+  }, [scrollYProgress, skip]);
   return percent;
 }
 
@@ -87,10 +88,11 @@ const NavLink = ({ href, label, isActive }: { href: string; label: string; isAct
 };
 
 export default function Navbar() {
+  const isTouch = useIsTouch();
   const scrolled = useScrolled();
   const [mobileOpen, setMobileOpen] = useState(false);
   const activeSection = useActiveSection();
-  const scrollPercent = useScrollPercent();
+  const scrollPercent = useScrollPercent(isTouch);
 
   useEffect(() => {
     if (mobileOpen) {

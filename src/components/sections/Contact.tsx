@@ -41,7 +41,7 @@ function LiveTerminal() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 0.5, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="mb-2 whitespace-nowrap"
+            className="mb-2"
           >
             {line}
           </motion.div>
@@ -89,7 +89,7 @@ const VoidInput = ({ label, name, type = 'text', placeholder, required, value, o
   const errorId = `${id}-error`;
   const active = focused || value.length > 0;
 
-  const shared = 'w-full bg-transparent border-b border-white/20 py-4 text-white focus:outline-none focus:border-transparent transition-all';
+  const shared = 'w-full bg-transparent py-4 text-white focus:outline-none transition-all';
 
   return (
     <div className="relative group mb-10">
